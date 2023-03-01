@@ -33,7 +33,14 @@ router.post('/', validateProject, async (req, res, next) => {
     }
 });
 
-// router.put();
+
+router.put('/:id', validateProjectId, validateProject, (req, res, next) => {
+    Projects.update(req.params.id, req.body)
+        .then(updatedProject => {
+            res.json(updatedProject);
+        })
+        .catch(next)
+});
 
 // router.delete();
 
