@@ -42,7 +42,15 @@ router.put('/:id', validateProjectId, validateProject, (req, res, next) => {
         .catch(next)
 });
 
-// router.delete();
+router.delete('/:id', validateProjectId, (req, res, next) => {
+    Projects.remove(req.params.id)
+        .then(() => {
+            res.status(200).json({
+                message: 'project has been removed'
+            });
+        })
+        .catch(next)
+});
 
 // router.get();
 
