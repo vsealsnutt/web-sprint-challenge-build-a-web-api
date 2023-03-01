@@ -19,6 +19,21 @@ async function validateActionId(req, res, next) {
     }
 };
 
+function validateAction(req, res, next) {
+    const { project_id, description, notes, completed } = req.body;
+    if (!project_id || 
+        !description || !description.trim() ||
+        !notes || !notes.trim() ||
+        completed === undefined) {
+            res.status(400).json({
+                message: 'action needs project id, description, and notes'
+            });
+        } else {
+            next();
+        }
+};
+
 module.exports = {
-    validateActionId
+    validateActionId,
+    validateAction
 }
