@@ -61,4 +61,14 @@ router.get('/:id/actions', validateProjectId, async (req, res, next) => {
     }
 });
 
+
+router.use((err, req, res, next) => {
+    res.status(err.status || 500).json({
+        customMessage: 'error with the projects router',
+        message: err.message,
+        stack: err.stack
+    });
+});
+
+
 module.exports = router;

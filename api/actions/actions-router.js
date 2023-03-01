@@ -53,4 +53,13 @@ router.delete('/:id', validateActionId, (req, res, next) => {
 });
 
 
+router.use((err, req, res, next) => {
+    res.status(err.status || 500).json({
+        customMessage: 'error with the actions router',
+        message: err.message,
+        stack: err.stack
+    });
+});
+
+
 module.exports = router;
