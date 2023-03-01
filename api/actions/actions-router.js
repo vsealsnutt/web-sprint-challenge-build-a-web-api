@@ -33,7 +33,13 @@ router.post('/', validateAction, async (req, res, next) => {
 });
 
 
-// router.put();
+router.put('/:id', validateActionId, validateAction, (req, res, next) => {
+    Action.update(req.params.id, req.body)
+        .then(updatedAction => {
+            res.json(updatedAction);
+        })
+        .catch(next)
+});
 
 
 // router.delete();
