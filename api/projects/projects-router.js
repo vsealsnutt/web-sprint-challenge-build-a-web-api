@@ -1,7 +1,7 @@
 // Write your "projects" router here!
 const express = require('express');
 
-const Projects = require('./projects-model');
+const Project = require('./projects-model');
 const { 
     validateProjectId,
     validateProject, 
@@ -10,7 +10,7 @@ const {
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
-    const projects = await Projects.get()
+    const projects = await Project.get()
     try {
         res.status(200).json(projects);
     } catch(err) {
@@ -25,7 +25,7 @@ router.get('/:id', validateProjectId, (req, res) => {
 
 
 router.post('/', validateProject, async (req, res, next) => {
-    const newProject = await Projects.insert(req.body);
+    const newProject = await Project.insert(req.body);
     try {
         res.status(201).json(newProject);
     } catch(err) {
@@ -35,7 +35,7 @@ router.post('/', validateProject, async (req, res, next) => {
 
 
 router.put('/:id', validateProjectId, validateProject, (req, res, next) => {
-    Projects.update(req.params.id, req.body)
+    Project.update(req.params.id, req.body)
         .then(updatedProject => {
             res.json(updatedProject);
         })
@@ -43,7 +43,7 @@ router.put('/:id', validateProjectId, validateProject, (req, res, next) => {
 });
 
 router.delete('/:id', validateProjectId, (req, res, next) => {
-    Projects.remove(req.params.id)
+    Project.remove(req.params.id)
         .then(() => {
             res.status(200).json({
                 message: 'project has been removed'
@@ -52,6 +52,13 @@ router.delete('/:id', validateProjectId, (req, res, next) => {
         .catch(next)
 });
 
-// router.get();
+router.get('/:id/actions', validateProjectId, async (req, res, next) => {
+    try {
+        const actions = await Project.getProjectActions(req.params.id);
+        res.json(actions);
+    } catch(err) {
+        next(err);
+    }
+});
 
 module.exports = router;
